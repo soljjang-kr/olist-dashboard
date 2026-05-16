@@ -1,0 +1,1888 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Olist Seller Growth Coach</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --navy-900: #0b1f3a;
+    --navy-800: #11294d;
+    --navy-700: #1a3a6b;
+    --navy-600: #2a4d85;
+    --navy-500: #3b62a3;
+    --navy-100: #e7ecf5;
+    --navy-50:  #f3f6fb;
+
+    --blue-accent: #2563eb;
+    --blue-soft: #dbeafe;
+
+    --green-600: #15803d;
+    --green-500: #16a34a;
+    --green-100: #dcfce7;
+
+    --orange-600: #c2410c;
+    --orange-500: #ea580c;
+    --orange-100: #ffedd5;
+
+    --red-600: #b91c1c;
+    --red-500: #dc2626;
+    --red-100: #fee2e2;
+
+    --gray-900: #111827;
+    --gray-700: #374151;
+    --gray-600: #4b5563;
+    --gray-500: #6b7280;
+    --gray-400: #9ca3af;
+    --gray-300: #d1d5db;
+    --gray-200: #e5e7eb;
+    --gray-100: #f3f4f6;
+    --gray-50:  #f9fafb;
+
+    --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.04);
+    --shadow-md: 0 2px 8px rgba(15, 23, 42, 0.06);
+    --shadow-lg: 0 8px 24px rgba(15, 23, 42, 0.08);
+
+    --radius: 10px;
+    --radius-sm: 6px;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background-color: var(--gray-50);
+    color: var(--gray-900);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Pretendard",
+                 "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic",
+                 Roboto, sans-serif;
+    font-size: 14px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ====================== Top Nav ====================== */
+  .topnav {
+    background: var(--navy-900);
+    color: #fff;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    padding: 0 24px;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    box-shadow: var(--shadow-md);
+  }
+  .topnav .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: 0.2px;
+  }
+  .brand-logo {
+    width: 28px; height: 28px;
+    border-radius: 7px;
+    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 800;
+  }
+  .topnav .nav-links {
+    margin-left: 32px;
+    display: flex; gap: 4px;
+  }
+  .topnav .nav-links a {
+    color: rgba(255,255,255,0.75);
+    text-decoration: none;
+    font-size: 13px;
+    padding: 6px 12px;
+    border-radius: 6px;
+  }
+  .topnav .nav-links a:hover { background: rgba(255,255,255,0.08); color:#fff; }
+  .topnav .nav-links a.active { background: rgba(255,255,255,0.12); color:#fff; }
+  .topnav .right {
+    margin-left: auto;
+    display: flex; align-items: center; gap: 16px;
+    font-size: 12.5px;
+    color: rgba(255,255,255,0.8);
+  }
+  .badge-env {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.15);
+    padding: 3px 8px;
+    border-radius: 999px;
+    font-size: 11px;
+  }
+  .user-chip {
+    display: flex; align-items: center; gap: 8px;
+  }
+  .avatar {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: #3b82f6;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 12px;
+  }
+
+  /* ====================== Layout ====================== */
+  .app {
+    display: grid;
+    grid-template-columns: 232px 1fr;
+    min-height: calc(100vh - 56px);
+  }
+  .sidebar {
+    background: #fff;
+    border-right: 1px solid var(--gray-200);
+    padding: 18px 12px;
+  }
+  .sidebar .section-label {
+    font-size: 11px;
+    color: var(--gray-500);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 6px 10px;
+    margin-top: 10px;
+  }
+  .sidebar .menu-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 9px 10px;
+    border-radius: 8px;
+    color: var(--gray-700);
+    cursor: pointer;
+    font-size: 13px;
+  }
+  .sidebar .menu-item:hover { background: var(--gray-100); }
+  .sidebar .menu-item.active {
+    background: var(--navy-50);
+    color: var(--navy-700);
+    font-weight: 600;
+  }
+  .sidebar .menu-item .icn {
+    width: 18px; height: 18px;
+    display: inline-flex; align-items: center; justify-content: center;
+    color: var(--gray-500);
+  }
+  .sidebar .menu-item.active .icn { color: var(--navy-600); }
+
+  .main {
+    padding: 24px 28px 60px;
+    max-width: 1400px;
+  }
+
+  /* ====================== Hero ====================== */
+  .hero {
+    background: linear-gradient(135deg, var(--navy-900), var(--navy-700));
+    color: #fff;
+    border-radius: 14px;
+    padding: 28px 32px;
+    margin-bottom: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::after {
+    content: "";
+    position: absolute;
+    right: -80px; top: -80px;
+    width: 280px; height: 280px;
+    background: radial-gradient(circle at center, rgba(59,130,246,0.35), transparent 70%);
+  }
+  .hero h1 {
+    margin: 0 0 8px;
+    font-size: 24px;
+    letter-spacing: -0.2px;
+  }
+  .hero .sub {
+    font-size: 14px;
+    color: rgba(255,255,255,0.85);
+    max-width: 720px;
+    line-height: 1.6;
+  }
+  .hero .meta {
+    margin-top: 18px;
+    display: flex; flex-wrap: wrap; gap: 8px;
+  }
+  .pill {
+    display: inline-flex; align-items: center;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.18);
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    color: rgba(255,255,255,0.92);
+  }
+  .feature-row {
+    margin-top: 22px;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 10px;
+  }
+  .feature-cell {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.14);
+    border-radius: 10px;
+    padding: 12px 12px;
+    font-size: 12.5px;
+    color: rgba(255,255,255,0.95);
+  }
+  .feature-cell strong { display:block; font-size: 12.5px; margin-bottom: 4px; color: #fff; }
+  .feature-cell span { color: rgba(255,255,255,0.7); font-size: 11.5px; }
+
+  /* ====================== Section Frame ====================== */
+  .section {
+    margin-bottom: 28px;
+  }
+  .section-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 12px;
+  }
+  .section-header h2 {
+    margin: 0;
+    font-size: 17px;
+    color: var(--navy-900);
+    letter-spacing: -0.1px;
+  }
+  .section-header .desc {
+    font-size: 12.5px; color: var(--gray-500);
+    margin-top: 2px;
+  }
+  .section-num {
+    display: inline-block;
+    background: var(--navy-100);
+    color: var(--navy-700);
+    border-radius: 999px;
+    padding: 2px 10px;
+    font-size: 11px;
+    font-weight: 700;
+    margin-right: 8px;
+  }
+
+  .card {
+    background: #fff;
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+  }
+  .card-pad { padding: 18px 20px; }
+
+  /* ====================== Seller Picker ====================== */
+  .picker-bar {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 16px;
+    margin-bottom: 14px;
+  }
+  .picker-bar .field label {
+    display:block; font-size: 12px; color: var(--gray-600); margin-bottom: 6px; font-weight: 600;
+  }
+  .input-wrap {
+    position: relative;
+  }
+  .input-wrap input, .input-wrap select {
+    width: 100%;
+    padding: 10px 12px 10px 36px;
+    border: 1px solid var(--gray-300);
+    border-radius: 8px;
+    font-size: 13px;
+    background: #fff;
+    color: var(--gray-900);
+    outline: none;
+  }
+  .input-wrap select { padding-left: 12px; appearance: none; background-image: linear-gradient(45deg, transparent 50%, #6b7280 50%), linear-gradient(135deg, #6b7280 50%, transparent 50%); background-position: calc(100% - 18px) 50%, calc(100% - 13px) 50%; background-size: 5px 5px; background-repeat: no-repeat; }
+  .input-wrap input:focus, .input-wrap select:focus { border-color: var(--blue-accent); box-shadow: 0 0 0 3px rgba(37,99,235,0.15); }
+  .input-icon {
+    position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+    color: var(--gray-400);
+    pointer-events: none;
+    font-size: 13px;
+  }
+
+  .seller-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+  .seller-card {
+    border: 1px solid var(--gray-200);
+    border-radius: 10px;
+    padding: 14px;
+    background: #fff;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    position: relative;
+  }
+  .seller-card:hover { border-color: var(--navy-500); transform: translateY(-1px); }
+  .seller-card.selected {
+    border-color: var(--blue-accent);
+    box-shadow: 0 0 0 3px rgba(37,99,235,0.15);
+    background: #fafcff;
+  }
+  .seller-card .sid {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 12px;
+    color: var(--gray-600);
+  }
+  .seller-card .name {
+    font-weight: 700; font-size: 14.5px; color: var(--navy-900);
+    margin: 4px 0 6px;
+  }
+  .seller-card .mini-kpi {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 6px 12px;
+    margin-top: 10px; font-size: 12px; color: var(--gray-600);
+  }
+  .seller-card .mini-kpi b { color: var(--gray-900); font-weight: 600; }
+  .group-tag {
+    display: inline-block;
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-weight: 600;
+  }
+  .group-top    { background: var(--green-100); color: var(--green-600); }
+  .group-mid    { background: var(--blue-soft); color: #1e40af; }
+  .group-bottom { background: var(--red-100); color: var(--red-600); }
+
+  /* ====================== KPI Cards ====================== */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+  }
+  .kpi-card {
+    background: #fff;
+    border: 1px solid var(--gray-200);
+    border-radius: 10px;
+    padding: 14px 16px;
+    position: relative;
+  }
+  .kpi-card .label {
+    color: var(--gray-500);
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+  }
+  .kpi-card .value {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--navy-900);
+    margin-top: 6px;
+    letter-spacing: -0.4px;
+  }
+  .kpi-card .bench {
+    font-size: 11.5px;
+    color: var(--gray-500);
+    margin-top: 4px;
+  }
+  .kpi-card .bench b { color: var(--gray-700); font-weight: 600; }
+  .kpi-card .status {
+    position: absolute;
+    top: 12px; right: 12px;
+    font-size: 10.5px;
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-weight: 700;
+  }
+  .status-good    { background: var(--green-100); color: var(--green-600); }
+  .status-warn    { background: var(--orange-100); color: var(--orange-600); }
+  .status-danger  { background: var(--red-100); color: var(--red-600); }
+  .status-neutral { background: var(--gray-100); color: var(--gray-600); }
+
+  /* ====================== Benchmark Bars ====================== */
+  .bench-table {
+    width: 100%; border-collapse: collapse; font-size: 13px;
+  }
+  .bench-table th, .bench-table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--gray-200);
+    text-align: left;
+  }
+  .bench-table th {
+    background: var(--gray-50);
+    color: var(--gray-700);
+    font-weight: 600;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+  }
+  .bench-table td.num { text-align: right; font-variant-numeric: tabular-nums; }
+  .bench-bar-cell { width: 240px; }
+  .bench-bar {
+    position: relative;
+    height: 18px;
+    background: var(--gray-100);
+    border-radius: 4px;
+    overflow: hidden;
+    display: flex; align-items: center;
+  }
+  .bench-bar .top-bar, .bench-bar .bot-bar {
+    height: 100%;
+    display: flex; align-items: center; padding-left: 6px;
+    font-size: 10.5px; color: #fff; font-weight: 600;
+  }
+  .top-bar { background: var(--green-500); }
+  .bot-bar { background: var(--orange-500); }
+
+  .double-bar {
+    display: grid;
+    grid-template-columns: 56px 1fr;
+    gap: 6px;
+    align-items: center;
+    margin-bottom: 6px;
+  }
+  .double-bar .lbl {
+    font-size: 11px; color: var(--gray-600); font-weight: 600;
+  }
+  .double-bar .fill-track {
+    background: var(--gray-100); border-radius: 4px; height: 14px;
+    overflow: hidden; position: relative;
+  }
+  .double-bar .fill { height: 100%; }
+  .fill-top { background: linear-gradient(90deg, #16a34a, #22c55e); }
+  .fill-bot { background: linear-gradient(90deg, #ea580c, #f97316); }
+
+  /* ====================== Risk Cards ====================== */
+  .risk-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+  .risk-card {
+    background: #fff;
+    border: 1px solid var(--gray-200);
+    border-radius: 10px;
+    padding: 16px;
+    border-left: 4px solid var(--gray-300);
+  }
+  .risk-card.risk-high { border-left-color: var(--red-500); }
+  .risk-card.risk-med  { border-left-color: var(--orange-500); }
+  .risk-card.risk-low  { border-left-color: var(--green-500); }
+  .risk-card .risk-head {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    margin-bottom: 8px;
+  }
+  .risk-card h4 {
+    margin: 0; font-size: 14px; color: var(--navy-900);
+  }
+  .risk-card .risk-level {
+    font-size: 11px; padding: 3px 9px; border-radius: 999px; font-weight: 700;
+  }
+  .level-high   { background: var(--red-100);    color: var(--red-600); }
+  .level-med    { background: var(--orange-100); color: var(--orange-600); }
+  .level-low    { background: var(--green-100);  color: var(--green-600); }
+  .risk-metric {
+    background: var(--gray-50);
+    border-radius: 6px;
+    padding: 8px 10px;
+    margin: 8px 0;
+    display: flex; justify-content: space-between;
+    font-size: 12px; color: var(--gray-700);
+  }
+  .risk-metric b { color: var(--navy-900); }
+  .risk-card .desc {
+    font-size: 12.5px; color: var(--gray-600);
+  }
+  .risk-card .action-hint {
+    margin-top: 10px;
+    font-size: 12px; color: var(--navy-700);
+    background: var(--navy-50); padding: 8px 10px; border-radius: 6px;
+  }
+
+  /* ====================== Action Cards ====================== */
+  .action-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+  }
+  .action-card {
+    background: #fff;
+    border: 1px solid var(--gray-200);
+    border-radius: 10px;
+    padding: 18px;
+    position: relative;
+  }
+  .action-card .prio {
+    position: absolute; top: 14px; right: 14px;
+    font-size: 11px; padding: 3px 9px; border-radius: 999px; font-weight: 700;
+  }
+  .prio-1 { background: var(--red-100); color: var(--red-600); }
+  .prio-2 { background: var(--orange-100); color: var(--orange-600); }
+  .prio-3 { background: var(--blue-soft); color: #1e40af; }
+  .prio-4 { background: var(--gray-100); color: var(--gray-700); }
+
+  .action-card h3 {
+    margin: 0 0 4px; font-size: 15px; color: var(--navy-900);
+  }
+  .action-card .target {
+    font-size: 12px; color: var(--gray-500); margin-bottom: 12px;
+  }
+  .action-card h5 {
+    margin: 10px 0 6px;
+    font-size: 11.5px;
+    color: var(--gray-500);
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    font-weight: 700;
+  }
+  .action-card ol, .action-card ul {
+    margin: 0; padding-left: 18px; font-size: 13px; color: var(--gray-700);
+  }
+  .action-card ol li, .action-card ul li { margin: 3px 0; }
+  .kpi-chips {
+    display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px;
+  }
+  .kpi-chip {
+    background: var(--navy-50); color: var(--navy-700);
+    border: 1px solid #d4dffb;
+    font-size: 11px;
+    padding: 3px 8px;
+    border-radius: 999px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+  .impact {
+    background: var(--green-100); color: var(--green-600);
+    border-radius: 6px; padding: 8px 10px;
+    font-size: 12.5px; margin-top: 10px;
+  }
+
+  /* ====================== Roadmap ====================== */
+  .roadmap {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    position: relative;
+  }
+  .roadmap-step {
+    background: #fff;
+    border: 1px solid var(--gray-200);
+    border-radius: 10px;
+    padding: 14px;
+    position: relative;
+  }
+  .roadmap-step .step-num {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    background: var(--navy-700); color: #fff;
+    font-weight: 700; font-size: 12px;
+    margin-bottom: 8px;
+  }
+  .roadmap-step h4 { margin: 0 0 6px; font-size: 13.5px; color: var(--navy-900); }
+  .roadmap-step ul {
+    margin: 0; padding-left: 16px; font-size: 12px; color: var(--gray-600);
+  }
+  .roadmap-step ul li { margin: 2px 0; }
+  .roadmap-step .progress {
+    margin-top: 10px;
+    height: 5px;
+    background: var(--gray-100);
+    border-radius: 999px;
+    overflow: hidden;
+  }
+  .roadmap-step .progress > div {
+    height: 100%;
+    background: linear-gradient(90deg, #3b62a3, #2563eb);
+    border-radius: 999px;
+  }
+
+  /* ====================== Admin Table ====================== */
+  .admin-filters {
+    display: flex; gap: 10px; flex-wrap: wrap;
+    margin-bottom: 12px;
+  }
+  .filter-chip {
+    border: 1px solid var(--gray-300);
+    background: #fff;
+    padding: 6px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    color: var(--gray-700);
+    cursor: pointer;
+  }
+  .filter-chip.active {
+    background: var(--navy-700);
+    color: #fff;
+    border-color: var(--navy-700);
+  }
+  .admin-table {
+    width: 100%; border-collapse: collapse; font-size: 13px;
+  }
+  .admin-table th, .admin-table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--gray-200);
+    text-align: left;
+  }
+  .admin-table th {
+    background: var(--gray-50);
+    color: var(--gray-700);
+    font-weight: 600;
+    font-size: 11.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+  }
+  .admin-table td.num { text-align: right; font-variant-numeric: tabular-nums; }
+  .row-link {
+    color: var(--navy-700); font-weight: 600; cursor: pointer;
+    font-family: ui-monospace, monospace; font-size: 12.5px;
+  }
+
+  /* ====================== KPI Track ====================== */
+  .kpi-track-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+  .kpi-track {
+    border: 1px solid var(--gray-200);
+    border-radius: 10px;
+    padding: 14px 16px;
+    background: #fff;
+  }
+  .kpi-track .name {
+    font-family: ui-monospace, monospace;
+    font-size: 12px;
+    color: var(--gray-600);
+  }
+  .kpi-track .move {
+    margin-top: 8px;
+    display: flex; align-items: baseline; gap: 8px;
+  }
+  .kpi-track .cur {
+    font-size: 18px; font-weight: 700; color: var(--gray-700);
+  }
+  .kpi-track .arrow { color: var(--gray-400); }
+  .kpi-track .tgt {
+    font-size: 18px; font-weight: 700; color: var(--green-600);
+  }
+  .kpi-track .pbar {
+    margin-top: 10px;
+    background: var(--gray-100);
+    border-radius: 999px;
+    height: 6px;
+    overflow: hidden;
+  }
+  .kpi-track .pbar > div {
+    height: 100%;
+    background: linear-gradient(90deg, #16a34a, #22c55e);
+    border-radius: 999px;
+  }
+  .kpi-track .note {
+    font-size: 11px; color: var(--gray-500); margin-top: 6px;
+  }
+
+  /* ====================== Tab Nav ====================== */
+  .tab-nav {
+    background: #fff;
+    border: 1px solid var(--gray-200);
+    border-radius: 10px;
+    padding: 4px;
+    display: inline-flex;
+    margin-bottom: 16px;
+    box-shadow: var(--shadow-sm);
+    overflow-x: auto;
+    max-width: 100%;
+  }
+  .tab-btn {
+    border: none;
+    background: transparent;
+    padding: 8px 14px;
+    font-size: 12.5px;
+    color: var(--gray-600);
+    border-radius: 7px;
+    cursor: pointer;
+    white-space: nowrap;
+    font-weight: 600;
+  }
+  .tab-btn:hover { background: var(--gray-100); color: var(--gray-900); }
+  .tab-btn.active { background: var(--navy-700); color: #fff; }
+
+  /* ====================== Footer / Caveats ====================== */
+  .caveats {
+    background: #fff;
+    border: 1px solid var(--gray-200);
+    border-left: 4px solid var(--orange-500);
+    border-radius: 10px;
+    padding: 18px 22px;
+  }
+  .caveats h3 {
+    margin: 0 0 10px; color: var(--orange-600); font-size: 14px;
+  }
+  .caveats ul {
+    margin: 0; padding-left: 20px; font-size: 12.5px; color: var(--gray-700);
+  }
+  .caveats ul li { margin: 4px 0; }
+
+  /* ====================== Chart Wrap ====================== */
+  .chart-wrap {
+    background: #fff;
+    border: 1px solid var(--gray-200);
+    border-radius: 10px;
+    padding: 16px 18px;
+    margin-bottom: 12px;
+  }
+  .chart-wrap h4 {
+    margin: 0 0 4px; font-size: 13.5px; color: var(--navy-900);
+  }
+  .chart-wrap .chart-sub {
+    font-size: 11.5px; color: var(--gray-500); margin-bottom: 10px;
+  }
+  .chart-canvas-box {
+    position: relative;
+    width: 100%;
+    height: 280px;
+  }
+  .chart-canvas-box.short {
+    height: 220px;
+  }
+  .chart-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .chart-legend-note {
+    margin-top: 8px;
+    font-size: 11.5px;
+    color: var(--gray-500);
+    display: flex; gap: 14px; flex-wrap: wrap;
+  }
+  .chart-legend-note .dot {
+    display: inline-block; width:8px; height:8px; border-radius:50%; margin-right:5px; vertical-align:middle;
+  }
+
+  .interp {
+    background: var(--navy-50);
+    border-left: 3px solid var(--navy-600);
+    padding: 12px 14px;
+    border-radius: 6px;
+    color: var(--gray-700);
+    font-size: 12.5px;
+    margin-top: 10px;
+  }
+
+  /* ====================== Helper ====================== */
+  .diff-up   { color: var(--red-600); font-weight: 600; }
+  .diff-down { color: var(--green-600); font-weight: 600; }
+  .small-note {
+    font-size: 11px; color: var(--gray-500); margin-top: 6px;
+  }
+  .mb-12 { margin-bottom: 12px; }
+  .mb-16 { margin-bottom: 16px; }
+  .mt-8  { margin-top: 8px; }
+
+  @media (max-width: 1100px) {
+    .app { grid-template-columns: 1fr; }
+    .sidebar { display: none; }
+    .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+    .risk-grid, .action-list, .kpi-track-grid, .seller-list { grid-template-columns: 1fr; }
+    .roadmap { grid-template-columns: repeat(2, 1fr); }
+    .feature-row { grid-template-columns: repeat(2, 1fr); }
+    .chart-row { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ========================= TOP NAV ========================= -->
+<header class="topnav">
+  <div class="brand">
+    <div class="brand-logo">SG</div>
+    <span>Olist Seller Growth Coach</span>
+    <span class="badge-env">Mockup · Internal Preview</span>
+  </div>
+  <nav class="nav-links">
+    <a class="active" onclick="scrollToId('hero')">대시보드</a>
+    <a onclick="scrollToId('seller-picker')">셀러 진단</a>
+    <a onclick="scrollToId('benchmark')">벤치마크</a>
+    <a onclick="scrollToId('actions')">액션 추천</a>
+    <a onclick="scrollToId('admin')">운영자 화면</a>
+  </nav>
+  <div class="right">
+    <span>v0.1 · 2026.05</span>
+    <div class="user-chip">
+      <div class="avatar">A</div>
+      <span>Seller Success · admin</span>
+    </div>
+  </div>
+</header>
+
+<div class="app">
+  <!-- ========================= SIDEBAR ========================= -->
+  <aside class="sidebar">
+    <div class="section-label">Workspace</div>
+    <div class="menu-item active" onclick="scrollToId('hero')"><span class="icn">■</span>홈</div>
+    <div class="menu-item" onclick="scrollToId('seller-picker')"><span class="icn">▣</span>셀러 진단</div>
+    <div class="menu-item" onclick="scrollToId('diagnostic')"><span class="icn">◉</span>KPI 요약</div>
+    <div class="menu-item" onclick="scrollToId('benchmark')"><span class="icn">≡</span>Top 벤치마크</div>
+    <div class="menu-item" onclick="scrollToId('risks')"><span class="icn">!</span>리스크 진단</div>
+
+    <div class="section-label">Coaching</div>
+    <div class="menu-item" onclick="scrollToId('actions')"><span class="icn">▲</span>액션 추천</div>
+    <div class="menu-item" onclick="scrollToId('roadmap')"><span class="icn">→</span>성장 로드맵</div>
+    <div class="menu-item" onclick="scrollToId('kpi-track')"><span class="icn">◆</span>KPI 추적</div>
+
+    <div class="section-label">Operator</div>
+    <div class="menu-item" onclick="scrollToId('admin')"><span class="icn">☰</span>운영자 화면</div>
+    <div class="menu-item" onclick="scrollToId('caveats')"><span class="icn">?</span>데이터 주의사항</div>
+  </aside>
+
+  <!-- ========================= MAIN ========================= -->
+  <main class="main">
+
+    <!-- ============== 1. HERO ============== -->
+    <section id="hero" class="hero">
+      <h1>셀러별 매출 격차를 진단하고, 성장 액션을 코칭합니다.</h1>
+      <div class="sub">
+        Olist Seller Growth Coach는 셀러별 매출·리뷰·배송·가격/배송비·상품 구성을 진단하고,
+        매출 상위 20% 셀러와 비교하여 개선 우선순위와 액션플랜을 제안하는 데이터 기반 셀러 코칭 서비스입니다.
+      </div>
+      <div class="meta">
+        <span class="pill">분석 단위 · seller_id</span>
+        <span class="pill">비교 기준 · total_sales Top 20% vs Bottom 20%</span>
+        <span class="pill">데이터셋 · Olist E-Commerce Public Dataset</span>
+        <span class="pill">접근 · 진단 → 비교 → 액션 → KPI 추적</span>
+      </div>
+      <div class="feature-row">
+        <div class="feature-cell"><strong>① 셀러 성과 진단</strong><span>매출·주문·리뷰·배송 KPI</span></div>
+        <div class="feature-cell"><strong>② Top 셀러 벤치마크</strong><span>그룹간 차이 시각화</span></div>
+        <div class="feature-cell"><strong>③ 배송비율 리스크</strong><span>freight_ratio 진단</span></div>
+        <div class="feature-cell"><strong>④ 리뷰 리스크</strong><span>저평점 비율 모니터링</span></div>
+        <div class="feature-cell"><strong>⑤ 카테고리 확장</strong><span>판매군 다양화 가이드</span></div>
+        <div class="feature-cell"><strong>⑥ 액션 & KPI 추적</strong><span>실행 후 성과 측정</span></div>
+      </div>
+    </section>
+
+    <!-- ============== Tab ============== -->
+    <div class="tab-nav" id="tabnav">
+      <button class="tab-btn active" data-tab="all">전체 보기</button>
+      <button class="tab-btn" data-tab="diag">셀러 진단</button>
+      <button class="tab-btn" data-tab="bench">벤치마크</button>
+      <button class="tab-btn" data-tab="risk">리스크</button>
+      <button class="tab-btn" data-tab="act">액션 추천</button>
+      <button class="tab-btn" data-tab="ops">운영자 화면</button>
+    </div>
+
+    <!-- ============== 2. SELLER PICKER ============== -->
+    <section id="seller-picker" class="section" data-section="diag">
+      <div class="section-header">
+        <div>
+          <h2><span class="section-num">02</span>셀러 선택</h2>
+          <div class="desc">진단할 셀러를 선택하면 이후 KPI · 리스크 · 액션 카드가 갱신됩니다.</div>
+        </div>
+      </div>
+      <div class="card card-pad">
+        <div class="picker-bar">
+          <div class="field">
+            <label>seller_id 검색</label>
+            <div class="input-wrap">
+              <span class="input-icon">🔍</span>
+              <input id="search-input" type="text" placeholder="예: SELLER_LOW_001">
+            </div>
+          </div>
+          <div class="field">
+            <label>셀러 그룹</label>
+            <div class="input-wrap">
+              <select id="group-select">
+                <option value="all">전체</option>
+                <option value="Top 20%">Top 20%</option>
+                <option value="Middle">Middle</option>
+                <option value="Bottom 20%">Bottom 20%</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="seller-list" id="seller-list"></div>
+      </div>
+    </section>
+
+    <!-- ============== 3. DIAGNOSTIC DASHBOARD ============== -->
+    <section id="diagnostic" class="section" data-section="diag">
+      <div class="section-header">
+        <div>
+          <h2><span class="section-num">03</span>셀러 진단 요약</h2>
+          <div class="desc">선택한 셀러의 핵심 KPI를 Top 20% 평균과 비교합니다.</div>
+        </div>
+        <div style="font-size:12px; color: var(--gray-500);">
+          선택: <b id="selected-id" style="color: var(--navy-700); font-family: ui-monospace, monospace;">-</b>
+          · 그룹 <span id="selected-group" class="group-tag group-bottom">-</span>
+        </div>
+      </div>
+      <div class="kpi-grid" id="kpi-grid"></div>
+    </section>
+
+    <!-- ============== 4. BENCHMARK ============== -->
+    <section id="benchmark" class="section" data-section="bench">
+      <div class="section-header">
+        <div>
+          <h2><span class="section-num">04</span>Top 20% vs Bottom 20% 벤치마크</h2>
+          <div class="desc">매출 상위/하위 셀러 그룹의 평균 지표를 비교합니다.</div>
+        </div>
+      </div>
+
+      <div class="chart-row">
+        <div class="chart-wrap">
+          <h4>Top 20% vs Bottom 20% 그룹 프로필</h4>
+          <div class="chart-sub">6개 축 모두 “외곽으로 갈수록 좋음” 방향으로 정규화 (배송비율은 100 − freight_ratio = ‘배송 효율’로 환산)</div>
+          <div class="chart-canvas-box"><canvas id="benchChart"></canvas></div>
+          <div class="chart-legend-note">
+            <span><span class="dot" style="background:#15803d"></span>Top 20% 평균</span>
+            <span><span class="dot" style="background:#ea580c"></span>Bottom 20% 평균</span>
+          </div>
+        </div>
+        <div class="chart-wrap">
+          <h4>선택 셀러 진단 · Top 20% 벤치마크 대비</h4>
+          <div class="chart-sub"><b id="radarSellerLabel">-</b> 의 6개 축 점수 — Top 20% 평균을 기준선으로 표시</div>
+          <div class="chart-canvas-box"><canvas id="sellerRadarChart"></canvas></div>
+          <div class="chart-legend-note">
+            <span><span class="dot" style="background:#2563eb"></span>선택 셀러</span>
+            <span><span class="dot" style="background:#15803d"></span>Top 20% 기준선</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="chart-row">
+        <div class="chart-wrap">
+          <h4>배송 정시성 비교 (도착비율 %)</h4>
+          <div class="chart-sub">스케일을 80~100%로 좁혀 그룹간 미세 차이를 표현</div>
+          <div class="chart-canvas-box short"><canvas id="onTimeChart"></canvas></div>
+          <div class="chart-legend-note">
+            <span>※ Bottom 20%가 소폭 더 높게 관찰됨 — 배송 정시성만으로 매출 격차를 설명하기는 어려움</span>
+          </div>
+        </div>
+        <div class="chart-wrap">
+          <h4>배송비율 비교 (freight_ratio %, 낮을수록 좋음)</h4>
+          <div class="chart-sub">상품가 대비 배송비 비중 — Top과 Bottom 격차가 명확하게 관찰됨</div>
+          <div class="chart-canvas-box short"><canvas id="freightChart"></canvas></div>
+          <div class="chart-legend-note">
+            <span>※ 같은 % 단위지만 의미가 반대(↓ 좋음) — 별도 차트로 분리해 해석 혼동을 줄였습니다.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card card-pad mb-12">
+        <table class="bench-table">
+          <thead>
+            <tr>
+              <th>지표</th>
+              <th class="num">Top 20% 평균</th>
+              <th class="num">Bottom 20% 평균</th>
+              <th>비교</th>
+              <th>해석</th>
+            </tr>
+          </thead>
+          <tbody id="bench-rows"></tbody>
+        </table>
+      </div>
+
+      <div class="interp">
+        <b>해석 노트.</b>
+        예상일 내 도착비율은 Bottom 20%가 소폭 높게 관찰됩니다. 따라서 배송 정시성만으로 매출 상위 셀러의 우위를 설명하기는 어렵습니다.
+        상위 셀러와의 차이는 <b>주문 규모, 상품 단가, 카테고리 수, 배송비율 구조</b>에서 더 뚜렷하게 나타납니다.
+        하위 셀러의 핵심 개선 포인트는 “배송이 느리다”가 아니라 “주문 수 부족, 낮은 상품 단가, 높은 배송비율, 좁은 상품군”으로 해석할 수 있습니다.
+      </div>
+    </section>
+
+    <!-- ============== 5. RISK CARDS ============== -->
+    <section id="risks" class="section" data-section="risk">
+      <div class="section-header">
+        <div>
+          <h2><span class="section-num">05</span>리스크 진단</h2>
+          <div class="desc">선택된 셀러에서 관찰되는 리스크 유형과 수준을 정리합니다.</div>
+        </div>
+      </div>
+      <div class="risk-grid" id="risk-grid"></div>
+    </section>
+
+    <!-- ============== 6. ACTIONS ============== -->
+    <section id="actions" class="section" data-section="act">
+      <div class="section-header">
+        <div>
+          <h2><span class="section-num">06</span>성장 액션 추천</h2>
+          <div class="desc">진단 결과를 기반으로 우선순위 순서로 액션을 제안합니다.</div>
+        </div>
+      </div>
+      <div class="action-list" id="action-list"></div>
+    </section>
+
+    <!-- ============== 7. ROADMAP ============== -->
+    <section id="roadmap" class="section" data-section="act">
+      <div class="section-header">
+        <div>
+          <h2><span class="section-num">07</span>셀러 성장 로드맵</h2>
+          <div class="desc">진단 → 리스크 식별 → 액션 실행 → KPI 추적 → 성장 그룹 진입</div>
+        </div>
+      </div>
+      <div class="roadmap">
+        <div class="roadmap-step">
+          <span class="step-num">1</span>
+          <h4>데이터 진단</h4>
+          <ul>
+            <li>현재 셀러 상태 파악</li>
+            <li>Top 셀러 벤치마크 비교</li>
+          </ul>
+          <div class="progress"><div style="width:100%"></div></div>
+        </div>
+        <div class="roadmap-step">
+          <span class="step-num">2</span>
+          <h4>리스크 식별</h4>
+          <ul>
+            <li>배송비율 / 리뷰</li>
+            <li>카테고리 / 초기 주문</li>
+          </ul>
+          <div class="progress"><div style="width:70%"></div></div>
+        </div>
+        <div class="roadmap-step">
+          <span class="step-num">3</span>
+          <h4>액션 실행</h4>
+          <ul>
+            <li>배송비 개선</li>
+            <li>카테고리 확장</li>
+            <li>첫 10건 캠페인</li>
+          </ul>
+          <div class="progress"><div style="width:40%"></div></div>
+        </div>
+        <div class="roadmap-step">
+          <span class="step-num">4</span>
+          <h4>KPI 추적</h4>
+          <ul>
+            <li>order_count, total_sales</li>
+            <li>freight_ratio, review_score</li>
+            <li>category_count</li>
+          </ul>
+          <div class="progress"><div style="width:20%"></div></div>
+        </div>
+        <div class="roadmap-step">
+          <span class="step-num">5</span>
+          <h4>성장 그룹 진입</h4>
+          <ul>
+            <li>Bottom 20% → Middle</li>
+            <li>Middle → Top 20%</li>
+          </ul>
+          <div class="progress"><div style="width:8%"></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============== 8. ADMIN VIEW ============== -->
+    <section id="admin" class="section" data-section="ops">
+      <div class="section-header">
+        <div>
+          <h2><span class="section-num">08</span>운영자용 관리 화면</h2>
+          <div class="desc">하위 셀러를 위험도·리스크 유형·담당자 배정 상태로 필터링합니다.</div>
+        </div>
+      </div>
+
+      <div class="card card-pad">
+        <div class="admin-filters">
+          <span class="filter-chip active">전체</span>
+          <span class="filter-chip">위험도 · 높음</span>
+          <span class="filter-chip">위험도 · 보통</span>
+          <span class="filter-chip">리스크 · 배송비율</span>
+          <span class="filter-chip">리스크 · 저평점</span>
+          <span class="filter-chip">리스크 · 카테고리</span>
+          <span class="filter-chip">미배정</span>
+          <span class="filter-chip">담당자 배정</span>
+        </div>
+
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>셀러 ID</th>
+              <th>그룹</th>
+              <th>주요 리스크</th>
+              <th class="num">배송비율</th>
+              <th class="num">리뷰점수</th>
+              <th class="num">주문 수</th>
+              <th>추천 액션</th>
+              <th>담당자</th>
+              <th>우선순위</th>
+            </tr>
+          </thead>
+          <tbody id="admin-rows"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ============== 9. KPI TRACK ============== -->
+    <section id="kpi-track" class="section" data-section="act">
+      <div class="section-header">
+        <div>
+          <h2><span class="section-num">09</span>KPI 추적</h2>
+          <div class="desc">액션 실행 후 추적할 KPI 목록 · 현재값 → 목표값(목업 예시)</div>
+        </div>
+      </div>
+      <div class="kpi-track-grid" id="kpi-track-grid"></div>
+      <div class="small-note">* 목표값은 서비스 목업용 예시이며 실제 서비스에서는 실험과 운영 데이터를 통해 조정해야 합니다.</div>
+    </section>
+
+    <!-- ============== 10. CAVEATS ============== -->
+    <section id="caveats" class="section" data-section="ops">
+      <div class="section-header">
+        <div>
+          <h2><span class="section-num">10</span>분석 한계 및 데이터 주의사항</h2>
+        </div>
+      </div>
+      <div class="caveats">
+        <h3>본 서비스는 EDA 기반 진단 목업입니다. 실제 운영 전 추가 검증이 필요합니다.</h3>
+        <ul>
+          <li>본 분석은 매출 상위/하위 셀러의 <b>특성 차이</b>를 비교한 것이며, 매출 차이의 직접 원인을 단정하지 않습니다.</li>
+          <li>리뷰는 <b>order_id 단위</b>이므로, 하나의 주문에 여러 셀러 상품이 포함된 경우 특정 셀러에게 완전히 귀속하기 어렵습니다.</li>
+          <li>고객 노출 수, 클릭률, 전환율, 광고비, 마진율 데이터가 없으므로 셀러 성과의 원인을 완전히 설명할 수 없습니다.</li>
+          <li>Olist는 <b>브라질 이커머스 데이터</b>이므로 국내 이커머스 시장에 직접 일반화하기 어렵습니다.</li>
+          <li>KPI 목표값은 목업용 예시이며 실제 서비스에서는 실험과 운영 데이터를 통해 조정해야 합니다.</li>
+          <li>배송 정시성만으로 매출 격차를 설명하지 않으며, Top 20%의 우위는 주문 규모·상품 단가·카테고리 수·배송비율 구조에서 더 뚜렷하게 관찰됩니다.</li>
+          <li>전환율·클릭률·광고효율·재구매율 등은 현재 데이터에 없는 “추가 수집이 필요한 KPI”로 분류합니다.</li>
+        </ul>
+      </div>
+    </section>
+
+    <div style="text-align:center; color: var(--gray-400); font-size: 12px; margin-top: 32px;">
+      © Olist Seller Growth Coach Mockup · Team Project Preview · Data: Olist E-Commerce Public Dataset
+    </div>
+  </main>
+</div>
+
+<script>
+/* =========================================================
+   Sample Data
+========================================================= */
+const BENCHMARK = {
+  top:    { orders: 124.8, review: 4.04, onTime: 91.8, category: 3.7,  price: 319.0, freight: 22.6 },
+  bottom: { orders: 1.7,   review: 3.83, onTime: 92.5, category: 1.05, price: 54.1,  freight: 48.9 }
+};
+
+const SELLERS = [
+  {
+    id: "SELLER_LOW_001",
+    name: "Bottom 셀러 A",
+    group: "Bottom 20%",
+    total_sales: 82,
+    order_count: 2,
+    avg_review_score: 3.7,
+    on_time_rate: 92,
+    avg_price: 52,
+    freight_ratio: 51,
+    category_count: 1,
+    active_months: 1.5
+  },
+  {
+    id: "SELLER_MID_001",
+    name: "Middle 셀러 B",
+    group: "Middle",
+    total_sales: 1280,
+    order_count: 14,
+    avg_review_score: 4.0,
+    on_time_rate: 91,
+    avg_price: 130,
+    freight_ratio: 31,
+    category_count: 2,
+    active_months: 6
+  },
+  {
+    id: "SELLER_TOP_001",
+    name: "Top 셀러 C",
+    group: "Top 20%",
+    total_sales: 18156,
+    order_count: 125,
+    avg_review_score: 4.04,
+    on_time_rate: 91.8,
+    avg_price: 319,
+    freight_ratio: 22.6,
+    category_count: 3.7,
+    active_months: 13.3
+  }
+];
+
+const ADMIN_ROWS = [
+  { id:"SELLER_LOW_001", group:"Bottom 20%", risk:"배송비율 과다",   freight:"51%",  review:3.7, orders:2,  action:"묶음배송 패키지", owner:"미배정",      prio:"높음" },
+  { id:"SELLER_LOW_002", group:"Bottom 20%", risk:"저평점 리스크",   freight:"34%",  review:2.8, orders:5,  action:"CS 개선 가이드",  owner:"김매니저",     prio:"높음" },
+  { id:"SELLER_LOW_003", group:"Bottom 20%", risk:"카테고리 협소",   freight:"42%",  review:4.1, orders:3,  action:"카테고리 확장",   owner:"미배정",       prio:"보통" },
+  { id:"SELLER_LOW_004", group:"Bottom 20%", risk:"초기 주문 부족",  freight:"28%",  review:4.3, orders:1,  action:"첫 10건 캠페인",  owner:"이매니저",     prio:"높음" },
+  { id:"SELLER_LOW_005", group:"Bottom 20%", risk:"가격 경쟁력",     freight:"47%",  review:3.9, orders:4,  action:"가격대 벤치마크", owner:"미배정",      prio:"보통" },
+  { id:"SELLER_LOW_006", group:"Bottom 20%", risk:"활동 기간 짧음",  freight:"38%",  review:4.0, orders:2,  action:"온보딩 강화",    owner:"박매니저",     prio:"보통" }
+];
+
+/* =========================================================
+   Renderers
+========================================================= */
+function fmtBRL(v) {
+  if (v >= 10000) return v.toLocaleString() + " BRL";
+  return v.toLocaleString() + " BRL";
+}
+function fmtPct(v) { return v + "%"; }
+
+/* ---------- Seller list ---------- */
+function renderSellerList() {
+  const list = document.getElementById("seller-list");
+  const search = document.getElementById("search-input").value.trim().toLowerCase();
+  const group  = document.getElementById("group-select").value;
+  list.innerHTML = "";
+  SELLERS.filter(s => {
+    const okSearch = !search || s.id.toLowerCase().includes(search);
+    const okGroup  = group === "all" || s.group === group;
+    return okSearch && okGroup;
+  }).forEach(s => {
+    const groupClass = s.group === "Top 20%" ? "group-top" :
+                       s.group === "Middle"  ? "group-mid" : "group-bottom";
+    const sel = s.id === STATE.selected ? " selected" : "";
+    list.insertAdjacentHTML("beforeend", `
+      <div class="seller-card${sel}" data-id="${s.id}">
+        <div class="sid">${s.id}</div>
+        <div class="name">${s.name}</div>
+        <span class="group-tag ${groupClass}">${s.group}</span>
+        <div class="mini-kpi">
+          <div>총 매출 <b>${s.total_sales.toLocaleString()} BRL</b></div>
+          <div>주문 수 <b>${s.order_count}건</b></div>
+          <div>리뷰 점수 <b>${s.avg_review_score.toFixed(2)}</b></div>
+          <div>배송비율 <b>${s.freight_ratio}%</b></div>
+        </div>
+      </div>
+    `);
+  });
+  list.querySelectorAll(".seller-card").forEach(el => {
+    el.addEventListener("click", () => selectSeller(el.dataset.id));
+  });
+}
+
+/* ---------- KPI cards ---------- */
+function statusOf(metric, value, top) {
+  // Higher-is-better metrics: order, review, onTime, category, price, sales
+  // Lower-is-better metrics: freight_ratio
+  if (metric === "freight_ratio") {
+    if (value <= top * 1.1) return ["status-good", "양호"];
+    if (value <= top * 1.4) return ["status-warn", "주의"];
+    return ["status-danger", "위험"];
+  }
+  if (metric === "on_time_rate") {
+    if (value >= top * 0.97) return ["status-good", "양호"];
+    if (value >= top * 0.9)  return ["status-warn", "주의"];
+    return ["status-danger", "개선 필요"];
+  }
+  // higher is better
+  const ratio = value / top;
+  if (ratio >= 0.85) return ["status-good", "양호"];
+  if (ratio >= 0.5)  return ["status-warn", "주의"];
+  if (ratio >= 0.2)  return ["status-danger", "개선 필요"];
+  return ["status-danger", "위험"];
+}
+
+function diffText(metric, value, top) {
+  const d = value - top;
+  if (metric === "freight_ratio") {
+    return d > 0 ? `<span class="diff-up">+${d.toFixed(1)}%p</span>` :
+                   `<span class="diff-down">${d.toFixed(1)}%p</span>`;
+  }
+  if (typeof top === "number") {
+    if (Math.abs(d) < 0.01) return `<span style="color:var(--gray-500)">±0</span>`;
+    return d > 0 ? `<span class="diff-down">+${d.toFixed(2)}</span>` :
+                   `<span class="diff-up">${d.toFixed(2)}</span>`;
+  }
+  return "";
+}
+
+function renderKPI(s) {
+  const T = BENCHMARK.top;
+  const items = [
+    { k:"total_sales",      label:"총 매출",          val:s.total_sales,      top:18156,    unit:"BRL", display:s.total_sales.toLocaleString()+" BRL" },
+    { k:"order_count",      label:"주문 수",          val:s.order_count,      top:T.orders, unit:"건",  display:s.order_count+"건" },
+    { k:"avg_review_score", label:"평균 리뷰 점수",   val:s.avg_review_score, top:T.review, unit:"점",  display:s.avg_review_score.toFixed(2)+"점" },
+    { k:"on_time_rate",     label:"예상일 내 도착비율", val:s.on_time_rate,     top:T.onTime, unit:"%",   display:s.on_time_rate+"%" },
+    { k:"avg_price",        label:"평균 상품 가격",    val:s.avg_price,        top:T.price,  unit:"BRL", display:s.avg_price+" BRL" },
+    { k:"freight_ratio",    label:"배송비율",          val:s.freight_ratio,    top:T.freight,unit:"%",   display:s.freight_ratio+"%" },
+    { k:"category_count",   label:"판매 카테고리 수",  val:s.category_count,   top:T.category,unit:"개", display:s.category_count+"개" },
+    { k:"active_months",    label:"활동 기간",         val:s.active_months,    top:13.3,     unit:"개월", display:s.active_months+"개월" }
+  ];
+
+  const grid = document.getElementById("kpi-grid");
+  grid.innerHTML = "";
+  items.forEach(it => {
+    const [cls, label] = statusOf(it.k, it.val, it.top);
+    const topDisp = (typeof it.top === "number") ? (Math.round(it.top*100)/100) : it.top;
+    grid.insertAdjacentHTML("beforeend", `
+      <div class="kpi-card">
+        <span class="status ${cls}">${label}</span>
+        <div class="label">${it.label}</div>
+        <div class="value">${it.display}</div>
+        <div class="bench">Top 20% 평균 <b>${topDisp}${it.unit === "BRL" ? " "+it.unit : it.unit}</b> · 차이 ${diffText(it.k, it.val, it.top)}</div>
+      </div>
+    `);
+  });
+
+  document.getElementById("selected-id").textContent = s.id;
+  const gEl = document.getElementById("selected-group");
+  gEl.textContent = s.group;
+  gEl.className = "group-tag " + (s.group === "Top 20%" ? "group-top" : s.group === "Middle" ? "group-mid" : "group-bottom");
+}
+
+/* ---------- Risks ---------- */
+function buildRisks(s) {
+  const T = BENCHMARK.top;
+  const risks = [];
+
+  // 1. Freight ratio
+  const fr = s.freight_ratio;
+  const fLevel = fr > 40 ? "high" : fr > 30 ? "med" : "low";
+  risks.push({
+    title:"배송비율 과다 리스크", level:fLevel,
+    cur:`현재 ${fr}%`, ref:`Top 20% 평균 ${T.freight}%`,
+    desc:"상품 가격 대비 배송비 비중이 높아 구매자가 체감하는 총 비용 부담이 커질 가능성이 관찰됩니다.",
+    action:"묶음배송, 무료배송 기준 설정, 배송비 포함 가격 재설계 검토"
+  });
+  // 2. Review
+  const rv = s.avg_review_score;
+  const rLevel = rv < 3.8 ? "high" : rv < 4.1 ? "med" : "low";
+  risks.push({
+    title:"리뷰 품질 리스크", level:rLevel,
+    cur:`현재 ${rv.toFixed(2)}점`, ref:`Top 20% 평균 ${T.review}점`,
+    desc:"평균 리뷰 점수가 낮을 경우 신뢰 형성과 추천 노출에 부정적 영향이 발생할 가능성이 있습니다.",
+    action:"상품 상세페이지 정보 보완 · 배송 안내 메시지 개선 · 저평점 CS 가이드"
+  });
+  // 3. Category
+  const cc = s.category_count;
+  const cLevel = cc <= 1 ? "high" : cc < 3 ? "med" : "low";
+  risks.push({
+    title:"카테고리 협소 리스크", level:cLevel,
+    cur:`현재 ${cc}개`, ref:`Top 20% 평균 ${T.category}개`,
+    desc:"단일 카테고리 의존도가 높아 시즌·트렌드 변동에 매출 변동성이 커질 가능성이 관찰됩니다.",
+    action:"연관 카테고리 추천 · 세트 상품 구성 · 카테고리별 가격대 벤치마크 제공"
+  });
+  // 4. Initial order
+  const oc = s.order_count;
+  const oLevel = oc < 5 ? "high" : oc < 20 ? "med" : "low";
+  risks.push({
+    title:"초기 주문 확보 실패 리스크", level:oLevel,
+    cur:`현재 ${oc}건`, ref:`Top 20% 평균 ${T.orders}건`,
+    desc:"초기 주문 수가 낮아 리뷰·신뢰·검색 노출의 선순환에 진입하지 못할 가능성이 시사됩니다.",
+    action:"노출 지원 · 첫 10건 수수료 감면 · 성과 리포트 제공"
+  });
+  // 5. Active months
+  const am = s.active_months;
+  const aLevel = am < 3 ? "high" : am < 8 ? "med" : "low";
+  risks.push({
+    title:"활동 기간 짧음 리스크", level:aLevel,
+    cur:`현재 ${am}개월`, ref:`Top 20% 평균 13.3개월`,
+    desc:"활동 기간이 짧아 운영 노하우·재구매 고객 확보 측면에서 안정화 시간이 더 필요할 수 있습니다.",
+    action:"온보딩 가이드 · 90일 코칭 프로그램 · 정기 KPI 점검"
+  });
+  // 6. Price competitiveness
+  const pr = s.avg_price;
+  const pLevel = pr < 100 ? "high" : pr < 200 ? "med" : "low";
+  risks.push({
+    title:"가격 경쟁력 리스크", level:pLevel,
+    cur:`평균 단가 ${pr} BRL`, ref:`Top 20% 평균 ${T.price} BRL`,
+    desc:"평균 단가가 낮아 배송비율이 높아지고 객단가 확보가 어려운 구조일 가능성이 관찰됩니다.",
+    action:"세트 상품 구성 · 프리미엄 라인업 추가 · 가격대 벤치마크 제공"
+  });
+
+  // Sort high first
+  const order = { high:0, med:1, low:2 };
+  risks.sort((a,b) => order[a.level] - order[b.level]);
+
+  return risks;
+}
+
+function renderRisks(s) {
+  const grid = document.getElementById("risk-grid");
+  const risks = buildRisks(s);
+  grid.innerHTML = "";
+  risks.forEach(r => {
+    const cls = r.level === "high" ? "risk-high" : r.level === "med" ? "risk-med" : "risk-low";
+    const lvlCls = r.level === "high" ? "level-high" : r.level === "med" ? "level-med" : "level-low";
+    const lvlTxt = r.level === "high" ? "높음" : r.level === "med" ? "보통" : "낮음";
+    grid.insertAdjacentHTML("beforeend", `
+      <div class="risk-card ${cls}">
+        <div class="risk-head">
+          <h4>${r.title}</h4>
+          <span class="risk-level ${lvlCls}">${lvlTxt}</span>
+        </div>
+        <div class="risk-metric">
+          <span>${r.cur}</span><span>${r.ref}</span>
+        </div>
+        <div class="desc">${r.desc}</div>
+        <div class="action-hint">추천 액션 · ${r.action}</div>
+      </div>
+    `);
+  });
+}
+
+/* ---------- Actions ---------- */
+function renderActions(s) {
+  const isTop = s.group === "Top 20%";
+  const baseActions = [
+    {
+      prio: 1, name: "배송비율 개선 패키지",
+      target: "상품가 대비 배송비 비중 과다",
+      basis: "freight_ratio",
+      steps: [
+        "2개 이상 구매 시 묶음배송 적용",
+        "일정 금액 이상 무료배송 기준 설정",
+        "저가 상품은 세트 상품으로 구성"
+      ],
+      impact: "고객 체감 비용 부담 완화 가능성이 시사됨",
+      kpis: ["freight_ratio", "order_count", "avg_order_value"]
+    },
+    {
+      prio: 2, name: "첫 10건 주문 달성 캠페인",
+      target: "초기 주문 수 부족",
+      basis: "order_count, active_months",
+      steps: [
+        "신규/저매출 셀러 노출 지원",
+        "첫 10건 주문까지 판매 수수료 일부 감면",
+        "리뷰 확보 후 성과 리포트 제공"
+      ],
+      impact: "초기 판매 경험 확보, 리뷰·노출 선순환 가능성",
+      kpis: ["order_count", "review_count", "total_sales"]
+    },
+    {
+      prio: 3, name: "카테고리 확장 추천",
+      target: "단일 카테고리 의존",
+      basis: "category_count",
+      steps: [
+        "동일 카테고리 Top 셀러의 연관 카테고리 추천",
+        "세트 상품 구성 제안",
+        "카테고리별 가격대 벤치마크 제공"
+      ],
+      impact: "매출 기회 확대, 변동성 완화 가능성",
+      kpis: ["category_count", "total_sales", "avg_order_value"]
+    },
+    {
+      prio: 4, name: "저평점 관리 가이드",
+      target: "낮은 리뷰 점수 또는 저평점 비율",
+      basis: "avg_review_score, low_review_rate",
+      steps: [
+        "상품 상세페이지 정보 보완",
+        "배송 안내 메시지 개선",
+        "저평점 발생 주문에 대한 CS 대응 가이드 제공"
+      ],
+      impact: "리뷰 점수 개선 가능성",
+      kpis: ["avg_review_score", "low_review_rate"]
+    }
+  ];
+
+  const topActions = [
+    {
+      prio: 1, name: "Top 셀러 유지 · 광고 효율화",
+      target: "성과 유지 및 광고/노출 최적화",
+      basis: "order_count, avg_order_value",
+      steps: [
+        "베스트셀러 상위 카테고리에 노출 가중치 부여",
+        "재구매 고객 대상 쿠폰 운영",
+        "분기별 KPI 리포트 자동화"
+      ],
+      impact: "성과 유지 및 확장 안정화",
+      kpis: ["order_count", "total_sales", "repeat_purchase(추가 수집 필요)"]
+    },
+    {
+      prio: 2, name: "신규 카테고리 진입 추천",
+      target: "성장 여지 추가 확보",
+      basis: "category_count, total_sales",
+      steps: [
+        "유사 Top 셀러의 인접 카테고리 분석",
+        "테스트 SKU 등록 가이드 제공"
+      ],
+      impact: "추가 매출 채널 확보 가능성",
+      kpis: ["category_count", "total_sales"]
+    },
+    {
+      prio: 3, name: "리뷰 품질 고도화",
+      target: "Top 셀러간 차별화",
+      basis: "avg_review_score",
+      steps: [
+        "리뷰 시각화 카드 운영",
+        "신규 상품 리뷰 부트스트랩 운영"
+      ],
+      impact: "전환 영향 가능성이 시사됨",
+      kpis: ["avg_review_score", "low_review_rate"]
+    },
+    {
+      prio: 4, name: "프리미엄 라인업 확장",
+      target: "객단가 추가 상승",
+      basis: "avg_price, avg_order_value",
+      steps: [
+        "프리미엄 가격대 라인 신설",
+        "프리미엄 라인 전용 셀러 페이지 구성"
+      ],
+      impact: "객단가 확대 가능성",
+      kpis: ["avg_price", "avg_order_value"]
+    }
+  ];
+
+  const actions = isTop ? topActions : baseActions;
+
+  const list = document.getElementById("action-list");
+  list.innerHTML = "";
+  actions.forEach(a => {
+    list.insertAdjacentHTML("beforeend", `
+      <div class="action-card">
+        <span class="prio prio-${a.prio}">우선순위 ${a.prio}</span>
+        <h3>액션 ${a.prio}. ${a.name}</h3>
+        <div class="target">대상 문제 · ${a.target}</div>
+
+        <h5>근거 지표</h5>
+        <div class="kpi-chips"><span class="kpi-chip">${a.basis}</span></div>
+
+        <h5>실행 방법</h5>
+        <ol>${a.steps.map(t => `<li>${t}</li>`).join("")}</ol>
+
+        <h5>추적 KPI</h5>
+        <div class="kpi-chips">${a.kpis.map(k => `<span class="kpi-chip">${k}</span>`).join("")}</div>
+
+        <div class="impact">기대 효과 · ${a.impact}</div>
+      </div>
+    `);
+  });
+}
+
+/* ---------- KPI Track ---------- */
+function renderKpiTrack(s) {
+  const grid = document.getElementById("kpi-track-grid");
+  const items = [
+    { name:"total_sales",       cur:`${s.total_sales.toLocaleString()} BRL`,     tgt:`${Math.round(s.total_sales*2.2).toLocaleString()} BRL`, ratio:0.45, note:"매출 단계별 확장 목표" },
+    { name:"order_count",       cur:`${s.order_count}건`,        tgt:`${Math.max(10, s.order_count*5)}건`,     ratio: Math.min(0.6, s.order_count/20), note:"첫 10건 캠페인 기준" },
+    { name:"avg_order_value",   cur:`${Math.round(s.avg_price*1.1).toLocaleString()} BRL`, tgt:`${Math.round(s.avg_price*1.5).toLocaleString()} BRL`, ratio:0.55, note:"세트 상품 도입 가정" },
+    { name:"freight_ratio",     cur:`${s.freight_ratio}%`,       tgt:`${Math.max(25, s.freight_ratio-15)}%`,   ratio: 0.4, note:"묶음배송/무료배송 기준 설정" },
+    { name:"avg_review_score",  cur:`${s.avg_review_score.toFixed(2)}점`, tgt:`${(Math.min(4.5, s.avg_review_score+0.4)).toFixed(2)}점`, ratio:0.5, note:"CS 가이드 적용" },
+    { name:"low_review_rate",   cur:`수집 필요`,                  tgt:`측정 가능 상태`,                          ratio:0.1, note:"추가 수집 필요 KPI" },
+    { name:"on_time_rate",      cur:`${s.on_time_rate}%`,        tgt:`${Math.min(98, s.on_time_rate+3)}%`,     ratio:0.7, note:"유지 중심" },
+    { name:"category_count",    cur:`${s.category_count}개`,     tgt:`${Math.min(5, s.category_count+2)}개`,   ratio:0.4, note:"인접 카테고리 추천" },
+    { name:"active_months",     cur:`${s.active_months}개월`,    tgt:`${(s.active_months+3).toFixed(1)}개월`,  ratio:0.6, note:"90일 코칭 프로그램" }
+  ];
+  grid.innerHTML = "";
+  items.forEach(it => {
+    grid.insertAdjacentHTML("beforeend", `
+      <div class="kpi-track">
+        <div class="name">${it.name}</div>
+        <div class="move">
+          <span class="cur">${it.cur}</span>
+          <span class="arrow">→</span>
+          <span class="tgt">${it.tgt}</span>
+        </div>
+        <div class="pbar"><div style="width:${Math.round(it.ratio*100)}%"></div></div>
+        <div class="note">${it.note}</div>
+      </div>
+    `);
+  });
+}
+
+/* ---------- Benchmark table ---------- */
+function renderBenchmarkTable() {
+  const tbody = document.getElementById("bench-rows");
+  const rows = [
+    ["주문 수",           BENCHMARK.top.orders,   BENCHMARK.bottom.orders,   "건",  "주문 규모에서 가장 큰 차이가 관찰됨"],
+    ["평균 리뷰 점수",     BENCHMARK.top.review,   BENCHMARK.bottom.review,   "점",  "Top이 소폭 높게 관찰됨"],
+    ["예상일 내 도착비율", BENCHMARK.top.onTime,   BENCHMARK.bottom.onTime,   "%",   "Bottom이 소폭 더 높게 관찰됨 — 배송 정시성만으로 매출 격차를 설명하기는 어렵다"],
+    ["평균 카테고리 수",   BENCHMARK.top.category, BENCHMARK.bottom.category, "개",  "Top의 상품군이 더 다양함"],
+    ["평균 상품 가격",     BENCHMARK.top.price,    BENCHMARK.bottom.price,    "BRL", "Top의 단가가 약 6배 수준"],
+    ["배송비율",           BENCHMARK.top.freight,  BENCHMARK.bottom.freight,  "%",   "Bottom의 배송비 비중이 두 배 이상"]
+  ];
+  tbody.innerHTML = "";
+  rows.forEach(r => {
+    const [label, topV, botV, unit, interp] = r;
+    const max = Math.max(topV, botV);
+    const topPct = (topV / max) * 100;
+    const botPct = (botV / max) * 100;
+
+    tbody.insertAdjacentHTML("beforeend", `
+      <tr>
+        <td><b>${label}</b></td>
+        <td class="num">${topV}${unit === "BRL" ? " BRL" : unit}</td>
+        <td class="num">${botV}${unit === "BRL" ? " BRL" : unit}</td>
+        <td class="bench-bar-cell">
+          <div class="double-bar">
+            <span class="lbl" style="color:var(--green-600)">Top</span>
+            <div class="fill-track"><div class="fill fill-top" style="width:${topPct}%"></div></div>
+          </div>
+          <div class="double-bar">
+            <span class="lbl" style="color:var(--orange-600)">Bottom</span>
+            <div class="fill-track"><div class="fill fill-bot" style="width:${botPct}%"></div></div>
+          </div>
+        </td>
+        <td style="color: var(--gray-600); font-size:12.5px;">${interp}</td>
+      </tr>
+    `);
+  });
+}
+
+/* ---------- Admin rows ---------- */
+function renderAdminRows() {
+  const tbody = document.getElementById("admin-rows");
+  tbody.innerHTML = "";
+  ADMIN_ROWS.forEach(r => {
+    const prioCls = r.prio === "높음" ? "level-high" : r.prio === "보통" ? "level-med" : "level-low";
+    const owner = r.owner === "미배정"
+      ? `<span class="group-tag" style="background:#fef3c7;color:#92400e;">미배정</span>`
+      : r.owner;
+    tbody.insertAdjacentHTML("beforeend", `
+      <tr>
+        <td><span class="row-link">${r.id}</span></td>
+        <td><span class="group-tag group-bottom">${r.group}</span></td>
+        <td>${r.risk}</td>
+        <td class="num">${r.freight}</td>
+        <td class="num">${r.review.toFixed(1)}</td>
+        <td class="num">${r.orders}</td>
+        <td>${r.action}</td>
+        <td>${owner}</td>
+        <td><span class="risk-level ${prioCls}">${r.prio}</span></td>
+      </tr>
+    `);
+  });
+}
+
+/* =========================================================
+   Charts
+========================================================= */
+let benchChart, sellerRadarChart, onTimeChart, freightChart;
+
+/* 정규화 기준 (모두 0~100, 외곽=좋음) */
+const RADAR_AXES = ["주문 규모", "평균 리뷰", "도착 정시성", "카테고리 수", "평균 단가", "배송 효율"];
+function toRadarScores(o) {
+  // o: { orders, review, onTime, category, price, freight }
+  return [
+    Math.min(100, (o.orders   / 150) * 100),   // 주문 수 cap 150
+    Math.min(100, (o.review   / 5)   * 100),   // 5점 만점
+    Math.min(100, o.onTime),                    // 0~100%
+    Math.min(100, (o.category / 5)   * 100),   // cap 5개
+    Math.min(100, (o.price    / 400) * 100),   // cap 400 BRL
+    Math.max(0,   100 - o.freight)              // 배송 효율 = 100 - freight_ratio
+  ];
+}
+function sellerAsRadarInput(s) {
+  return {
+    orders:   s.order_count,
+    review:   s.avg_review_score,
+    onTime:   s.on_time_rate,
+    category: s.category_count,
+    price:    s.avg_price,
+    freight:  s.freight_ratio
+  };
+}
+
+function renderBenchChart() {
+  const ctx = document.getElementById("benchChart").getContext("2d");
+  const topData = toRadarScores(BENCHMARK.top);
+  const botData = toRadarScores(BENCHMARK.bottom);
+
+  if (benchChart) benchChart.destroy();
+  benchChart = new Chart(ctx, {
+    type: "radar",
+    data: {
+      labels: RADAR_AXES,
+      datasets: [
+        {
+          label: "Top 20% 평균",
+          data: topData,
+          backgroundColor: "rgba(21,128,61,0.18)",
+          borderColor: "#15803d",
+          borderWidth: 2,
+          pointBackgroundColor: "#15803d",
+          pointRadius: 3
+        },
+        {
+          label: "Bottom 20% 평균",
+          data: botData,
+          backgroundColor: "rgba(234,88,12,0.18)",
+          borderColor: "#ea580c",
+          borderWidth: 2,
+          pointBackgroundColor: "#ea580c",
+          pointRadius: 3
+        }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: (ctx) => `${ctx.dataset.label}: ${ctx.parsed.r.toFixed(1)}점`
+          }
+        }
+      },
+      scales: {
+        r: {
+          beginAtZero: true, max: 100,
+          ticks: { stepSize: 25, font:{size:10}, color:"#9ca3af", backdropColor:"transparent" },
+          grid: { color: "#e5e7eb" },
+          angleLines: { color: "#e5e7eb" },
+          pointLabels: { font:{ size:11, weight:"600" }, color:"#374151" }
+        }
+      }
+    }
+  });
+}
+
+function renderSellerRadar(s) {
+  const ctx = document.getElementById("sellerRadarChart").getContext("2d");
+  const topData = toRadarScores(BENCHMARK.top);
+  const sellerData = toRadarScores(sellerAsRadarInput(s));
+
+  document.getElementById("radarSellerLabel").textContent = `${s.id} (${s.group})`;
+
+  if (sellerRadarChart) sellerRadarChart.destroy();
+  sellerRadarChart = new Chart(ctx, {
+    type: "radar",
+    data: {
+      labels: RADAR_AXES,
+      datasets: [
+        {
+          label: "Top 20% 기준선",
+          data: topData,
+          backgroundColor: "rgba(21,128,61,0.08)",
+          borderColor: "#15803d",
+          borderWidth: 1.5,
+          borderDash: [5,4],
+          pointRadius: 0
+        },
+        {
+          label: "선택 셀러",
+          data: sellerData,
+          backgroundColor: "rgba(37,99,235,0.22)",
+          borderColor: "#2563eb",
+          borderWidth: 2,
+          pointBackgroundColor: "#2563eb",
+          pointRadius: 3
+        }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: (ctx) => `${ctx.dataset.label}: ${ctx.parsed.r.toFixed(1)}점`
+          }
+        }
+      },
+      scales: {
+        r: {
+          beginAtZero: true, max: 100,
+          ticks: { stepSize: 25, font:{size:10}, color:"#9ca3af", backdropColor:"transparent" },
+          grid: { color: "#e5e7eb" },
+          angleLines: { color: "#e5e7eb" },
+          pointLabels: { font:{ size:11, weight:"600" }, color:"#374151" }
+        }
+      }
+    }
+  });
+}
+
+function renderOnTimeChart() {
+  const ctx = document.getElementById("onTimeChart").getContext("2d");
+  const top = BENCHMARK.top, bot = BENCHMARK.bottom;
+  if (onTimeChart) onTimeChart.destroy();
+  onTimeChart = new Chart(ctx, {
+    type: "bar",
+    data: {
+      labels: ["Top 20%", "Bottom 20%"],
+      datasets: [{
+        label: "예상일 내 도착비율 (%)",
+        data: [top.onTime, bot.onTime],
+        backgroundColor: ["#15803d", "#ea580c"],
+        borderRadius: 6,
+        barThickness: 56
+      }]
+    },
+    options: {
+      indexAxis: "y",
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: (c) => `${c.parsed.x}%` } }
+      },
+      scales: {
+        x: { min: 80, max: 100, ticks: { callback: v => v+"%", font:{size:11} }, grid: { color: "#f1f5f9" } },
+        y: { grid: { display: false }, ticks: { font:{size:12, weight:"600"} } }
+      }
+    }
+  });
+}
+
+function renderFreightChart() {
+  const ctx = document.getElementById("freightChart").getContext("2d");
+  const top = BENCHMARK.top, bot = BENCHMARK.bottom;
+  if (freightChart) freightChart.destroy();
+  freightChart = new Chart(ctx, {
+    type: "bar",
+    data: {
+      labels: ["Top 20%", "Bottom 20%"],
+      datasets: [{
+        label: "배송비율 (%)",
+        data: [top.freight, bot.freight],
+        backgroundColor: ["#15803d", "#dc2626"],
+        borderRadius: 6,
+        barThickness: 56
+      }]
+    },
+    options: {
+      indexAxis: "y",
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: (c) => `${c.parsed.x}%` } }
+      },
+      scales: {
+        x: { min: 0, max: 60, ticks: { callback: v => v+"%", font:{size:11} }, grid: { color: "#f1f5f9" } },
+        y: { grid: { display: false }, ticks: { font:{size:12, weight:"600"} } }
+      }
+    }
+  });
+}
+
+/* =========================================================
+   State / Wiring
+========================================================= */
+const STATE = { selected: "SELLER_LOW_001" };
+
+function selectSeller(id) {
+  STATE.selected = id;
+  const s = SELLERS.find(x => x.id === id);
+  renderSellerList();
+  renderKPI(s);
+  renderRisks(s);
+  renderActions(s);
+  renderKpiTrack(s);
+  renderSellerRadar(s);
+}
+
+function scrollToId(id) {
+  const el = document.getElementById(id);
+  if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+/* Tab nav (filter sections) */
+function bindTabs() {
+  const tabs = document.querySelectorAll(".tab-btn");
+  tabs.forEach(btn => {
+    btn.addEventListener("click", () => {
+      tabs.forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      const t = btn.dataset.tab;
+      const map = { diag:["diag"], bench:["bench"], risk:["risk"], act:["act"], ops:["ops"] };
+      document.querySelectorAll("section[data-section]").forEach(sec => {
+        if (t === "all") sec.style.display = "";
+        else sec.style.display = map[t].includes(sec.dataset.section) ? "" : "none";
+      });
+    });
+  });
+}
+
+/* Boot */
+document.addEventListener("DOMContentLoaded", () => {
+  renderBenchmarkTable();
+  renderAdminRows();
+  renderBenchChart();
+  renderOnTimeChart();
+  renderFreightChart();
+  selectSeller("SELLER_LOW_001");
+
+  document.getElementById("search-input").addEventListener("input", renderSellerList);
+  document.getElementById("group-select").addEventListener("change", renderSellerList);
+
+  bindTabs();
+});
+</script>
+
+</body>
+</html>

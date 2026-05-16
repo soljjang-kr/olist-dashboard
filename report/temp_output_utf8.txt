@@ -1,0 +1,53 @@
+﻿데이터 로딩 중...
+지표 집계 중...
+
+--- 분석 결과 (전체 셀러 기준) ---
+
+[지표 비교]
+|                            |     Top 20% |   Bottom 20% |            차이 |
+|:---------------------------|------------:|-------------:|--------------:|
+| monthly_avg_sales          | 1739.95     |    38.244    | 1701.71       |
+| avg_price                  |  429.497    |    43.7143   |  385.783      |
+| avg_description_length     |  995.457    |   729.513    |  265.944      |
+| category_count             |    3.09208  |     1.29402  |    1.79806    |
+| avg_delivery_days          |   13.0174   |    11.882    |    1.13534    |
+| avg_photos_qty             |    2.36569  |     1.96336  |    0.402337   |
+| review_std                 |    1.17322  |     0.771363 |    0.401853   |
+| freight_ratio              |    0.184536 |     0.554606 |   -0.370069   |
+| avg_seller_processing_days |    3.82099  |     4.15847  |   -0.337487   |
+| avg_review_score           |    3.97508  |     3.88869  |    0.0863983  |
+| low_review_rate            |    0.184605 |     0.204093 |   -0.0194876  |
+| on_time_rate               |    0.909361 |     0.918796 |   -0.00943536 |
+
+[상위 20% 셀러 지역 분포 Top 5]
+| seller_state   |   count |
+|:---------------|--------:|
+| SP             |     370 |
+| PR             |      67 |
+| MG             |      48 |
+| RJ             |      39 |
+| SC             |      37 |
+
+[하위 20% 셀러 지역 분포 Top 5]
+| seller_state   |   count |
+|:---------------|--------:|
+| SP             |     368 |
+| PR             |      72 |
+| SC             |      46 |
+| MG             |      41 |
+| RJ             |      36 |
+
+[월평균 매출과의 상관계수 랭킹]
+|                            |   Correlation |
+|:---------------------------|--------------:|
+| avg_price                  |    0.377001   |
+| category_count             |    0.246144   |
+| freight_ratio              |   -0.208273   |
+| review_std                 |    0.13032    |
+| avg_description_length     |    0.107144   |
+| avg_delivery_days          |    0.0436176  |
+| on_time_rate               |   -0.0282863  |
+| avg_seller_processing_days |    0.0196951  |
+| avg_photos_qty             |    0.0186817  |
+| avg_review_score           |    0.00885137 |
+| low_review_rate            |   -0.00805863 |

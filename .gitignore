@@ -1,0 +1,18 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+env/
+venv/
+ENV/
+
+# Streamlit
+.streamlit/
+
+# Data (용량이 너무 크다면 제외할 수 있지만, 분석용이므로 포함 권장)
+# 만약 Git LFS를 사용하지 않는다면 대용량 파일은 제외하세요.
+# olist_orders_dataset.csv
+
+# Reports
+Project1/images/
