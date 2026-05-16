@@ -1,8 +1,20 @@
+"""
+Olist 이커머스 데이터를 활용한 전문 분석 대시보드입니다.
+
+주요 기능:
+- HTML 기반 EDA 리포트 렌더링
+- 실시간 핵심 비즈니스 지표(DAU, MAU, ARPPU) 시각화
+- 월간 코호트 리텐션 분석 (고객 수 및 매출액 기준)
+
+작성자: Antigravity
+"""
+
 import streamlit as st
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 import numpy as np
+import os
 from datetime import datetime
 import streamlit.components.v1 as components
 
@@ -11,13 +23,22 @@ st.set_page_config(page_title="Professional Olist Analysis Dashboard", layout="w
 
 # --- 경로 설정 유틸리티 ---
 def get_path(relative_path):
-    # Project1 폴더 내부에서 실행될 때와 외부에서 실행될 때를 모두 대응
+    # Streamlit Cloud와 로컬 환경 모두 대응
+    # 1. 절대 경로 확인
     if os.path.exists(relative_path):
         return relative_path
-    # 'Project1/'을 제거한 경로 시도
-    alt_path = relative_path.replace('Project1/', '')
-    if os.path.exists(alt_path):
-        return alt_path
+    
+    # 2. 'Project1/' 접두사 제거 후 확인 (GitHub 루트 배포 대응)
+    clean_path = relative_path.replace('Project1/', '')
+    if os.path.exists(clean_path):
+        return clean_path
+    
+    # 3. 'src/' 내부에 있을 경우 상위 폴더 확인
+    base_dir = os.path.dirname(os.path.dirname(__file__))
+    joined_path = os.path.join(base_dir, clean_path)
+    if os.path.exists(joined_path):
+        return joined_path
+        
     return relative_path
 
 # --- 데이터 로딩 및 캐싱 ---
